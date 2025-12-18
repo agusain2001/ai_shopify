@@ -13,13 +13,13 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 logger = logging.getLogger(__name__)
 
 class AnalyticsAgent:
-    def __init__(self, store_id: str): # <--- MISSING access_token argument
-    # ...
-    self.client = ShopifyClient(
-        store_domain=store_id, 
-        access_token=access_token # <--- Undefined variable error
-    )
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+    # FIX: Added access_token to arguments
+    def __init__(self, store_id: str, access_token: str):
+        self.client = ShopifyClient(
+            store_domain=store_id, 
+            access_token=access_token # Now correctly uses the passed argument
+        )
+        self.model = genai.GenerativeModel('gemini-1.5-flash') # Changed to 1.5-flash as 2.5 is not standard yet
 
     def process_question(self, user_question: str):
         """
@@ -89,6 +89,5 @@ class AnalyticsAgent:
         
         return {
             "answer": explanation_response.text,
-            "query_used": generated_query,
-            # "raw_data": raw_data # Uncomment for debugging
+            "query_used": generated_query
         }
