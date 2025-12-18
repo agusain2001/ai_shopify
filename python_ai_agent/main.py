@@ -25,7 +25,7 @@ async def analyze_store(request: QuestionRequest):
     logger.info(f"Received request for store: {request.store_id}")
     try:
         # Pass the token to the agent
-        agent = AnalyticsAgent(store_id=request.store_id, access_token=request.access_token)
+       agent = AnalyticsAgent(store_id=request.store_id, access_token=request.access_token)
         
         result = agent.process_question(request.question)
         return result
