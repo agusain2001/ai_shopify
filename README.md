@@ -190,23 +190,3 @@ shopify_ai_project/
 
 ---
 
-## 🚧 Limitations & Notes
-
-* Requires Shopify stores with Analytics API access
-* Data accuracy depends on ShopifyQL support and store permissions
-* Designed for analytical queries, not transactional operations
-
----
-
-## 📌 Future Enhancements
-
-* Multi-store support per merchant
-* Query history and caching
-* Dashboard UI for non-technical users
-* Support for additional LLM providers
-
----
-
-## 📄 License
-
-This project is provided for educational and internal use. Review Shopify and Google Gemini API terms before deploying to production.
