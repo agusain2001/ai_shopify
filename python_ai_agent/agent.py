@@ -16,8 +16,8 @@ class AnalyticsAgent:
     def __init__(self, store_id: str):
         # In production, fetch specific credentials for store_id from DB
         self.client = ShopifyClient(
-            store_domain=os.getenv("SHOPIFY_STORE_URL"),
-            access_token=os.getenv("SHOPIFY_ACCESS_TOKEN")
+            store_domain=store_id, 
+            access_token=access_token
         )
         self.model = genai.GenerativeModel('gemini-2.5-flash')
 
