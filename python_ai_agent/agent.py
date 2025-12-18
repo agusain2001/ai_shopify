@@ -13,12 +13,12 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 logger = logging.getLogger(__name__)
 
 class AnalyticsAgent:
-    def __init__(self, store_id: str):
-        # In production, fetch specific credentials for store_id from DB
-        self.client = ShopifyClient(
-            store_domain=store_id, 
-            access_token=access_token
-        )
+    def __init__(self, store_id: str): # <--- MISSING access_token argument
+    # ...
+    self.client = ShopifyClient(
+        store_domain=store_id, 
+        access_token=access_token # <--- Undefined variable error
+    )
         self.model = genai.GenerativeModel('gemini-2.5-flash')
 
     def process_question(self, user_question: str):
