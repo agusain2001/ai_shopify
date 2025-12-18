@@ -35,6 +35,8 @@ module Api
 
         if response.code == 200
           token = response['access_token']
+          shop_record = Shop.find_or_initialize_by(shopify_domain: shop)
+          shop_record.update(shopify_token: token)
           # TODO: Store this token in a database linked to the 'shop' domain
           render json: { message: "Installation successful", token: token, shop: shop }
         else
