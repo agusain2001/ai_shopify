@@ -1,134 +1,120 @@
-# Shopify AI Analytics Project
+# Shopify AI Analytics Assistant
 
-## Overview
-This project consists of two main services:
-1. **Rails Gateway**: A Ruby on Rails API acting as the gateway and handling Shopify OAuth.
-2. **Python AI Agent**: A Python FastAPI service powered by Gemini to analyze data and execute ShopifyQL queries.
+A powerful AI-powered analytics assistant for Shopify stores. It allows merchants to ask questions in plain English (e.g., "What are my top selling products?") and get instant, data-driven insights.
 
-## Architecture
+## 🚀 Features
 
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   User/Client   │────▶│  Rails Gateway  │────▶│  Python Agent   │
-│                 │     │   (Port 3000)   │     │   (Port 8000)   │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-                               │                        │
-                               ▼                        ▼
-                        ┌─────────────────┐     ┌─────────────────┐
-                        │  SQLite DB      │     │  Shopify API    │
-                        │  (shops, logs)  │     │  (ShopifyQL)    │
-                        └─────────────────┘     └─────────────────┘
-```
+### **1. AI-Powered Chat Interface**
+- **Natural Language Understanding**: Uses Gemini 1.5 Flash to understand user intent.
+- **Interactive Chat UI**: A modern, responsive web interface for easy interaction.
+- **Quick Actions**: One-click buttons for common questions (sales, inventory, orders).
 
-## Features
+### **2. Advanced Analytics Agent**
+- **Smart Planning**: The agent plans its approach before executing.
+- **Intent Classification**: Automatically detects if you asked about sales, inventory, products, etc.
+- **Standard GraphQL API**: Works with **ALL** Shopify stores (not just Plus).
+- **Intelligent Analysis**: The AI analyzes raw data to provide actionable business insights.
 
-### Core Features
-- ✅ OAuth-based Shopify authentication with HMAC verification
-- ✅ Natural language question processing
-- ✅ LLM-powered ShopifyQL generation (Gemini)
-- ✅ Business-friendly response formatting
+### **3. Performance & Reliability**
+- **Caching**: 5-minute in-memory cache for fast responses.
+- **Retry Logic**: Automatically handles API hiccups.
+- **Metrics Dashboard**: Real-time monitoring of response times, success rates, and errors.
 
-### Agentic Workflow
-- ✅ Intent understanding and planning
-- ✅ Schema-aware query generation
-- ✅ Query validation layer
-- ✅ Retry logic with error context
-- ✅ Conversation memory for follow-ups
+### **4. Security & Architecture**
+- **Rails Gateway**: Secure API handling authentication and request logging.
+- **Python AI Service**: Dedicated microservice for AI processing.
+- **SQLite Database**: Lightweight, zero-config database.
+- **Environment Variables**: Sensitive credentials managed via `.env`.
 
-### Bonus Features
-- ✅ Caching with TTL (5 minutes)
-- ✅ Request logging to database
-- ✅ Metrics tracking (success rates, response times, cache hits)
-- ✅ Metrics dashboard at `/dashboard.html`
-- ✅ Secure token storage in database
+---
 
-## Setup
+## 🛠️ Installation & Setup
 
-### Prerequisites
-- Docker & Docker Compose (recommended)
-- OR Ruby 3.2+ and Python 3.9+
+### **1. Prerequisites**
+- Ruby 3.2+
+- Python 3.9+
+- A Shopify Store (Partner account recommended)
+- A Google Gemini API Key (Free tier works)
 
-### Environment Variables
-
-Create a `.env` file in the root:
-
-```env
-# Shopify OAuth
-SHOPIFY_API_KEY=your_api_key
-SHOPIFY_API_SECRET=your_api_secret
-SHOPIFY_REDIRECT_URI=http://localhost:3000/api/v1/auth/shopify/callback
-
-# Shopify Store (for queries)
-SHOPIFY_STORE_URL=your-store.myshopify.com
-SHOPIFY_ACCESS_TOKEN=your_access_token
-
-# AI Service
-GEMINI_API_KEY=your_gemini_api_key
-
-# Rails
-SECRET_KEY_BASE=generate_with_rails_secret
-```
-
-### Running with Docker
-
-```bash
-docker-compose up --build
-```
-
-### Running Locally
-
-**Rails Gateway:**
-```bash
+### **2. Setup Rails Gateway (Backend)**
+```powershell
 cd rails_gateway
+gem install rails bundler
 bundle install
 rails db:migrate
+```
+
+### **3. Setup Python Agent (AI Service)**
+```powershell
+cd python_ai_agent
+pip install -r requirements.txt
+```
+
+### **4. Configure Environment**
+Update `.env` files in both directories with your credentials:
+- `rails_gateway/.env`: API keys, Ports
+- `python_ai_agent/.env`: Gemini Key, Shopify Token
+
+---
+
+## ▶️ Running the Application
+
+You need to run **two terminal windows**:
+
+**Terminal 1: Rails Server**
+```powershell
+cd rails_gateway
 rails server
 ```
 
-**Python Agent:**
-```bash
+**Terminal 2: Python Agent**
+```powershell
 cd python_ai_agent
-pip install -r requirements.txt
 python main.py
 ```
 
-## API Endpoints
+---
 
-### Rails Gateway (Port 3000)
+## 💻 Usage
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/v1/questions` | Submit a natural language question |
-| GET | `/api/v1/auth/shopify/install?shop=xxx` | Start OAuth flow |
-| GET | `/api/v1/auth/shopify/callback` | OAuth callback |
-| GET | `/up` | Health check |
+### **1. Chat Interface** 
+Open your browser to:
+👉 **[http://localhost:3000/index.html](http://localhost:3000/index.html)**
 
-### Python Agent (Port 8000)
+### **2. Metrics Dashboard**
+Monitor system performance at:
+👉 **[http://localhost:3000/dashboard.html](http://localhost:3000/dashboard.html)**
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/analyze` | Analyze question (internal) |
-| GET | `/metrics` | Get service metrics |
-| GET | `/health` | Health check |
+### **3. API Usage (Curl)**
 
-## Example Request
-
+**Top Selling Products:**
 ```bash
 curl -X POST http://localhost:3000/api/v1/questions \
   -H "Content-Type: application/json" \
-  -d '{
-    "store_id": "my-store.myshopify.com",
-    "question": "What were my top 5 selling products last week?"
-  }'
+  -d '{"store_id": "your-store.myshopify.com", "question": "What are my top products?"}'
 ```
 
-## Metrics Dashboard
+**Inventory Check:**
+```bash
+curl -X POST http://localhost:3000/api/v1/questions \
+  -H "Content-Type: application/json" \
+  -d '{"store_id": "your-store.myshopify.com", "question": "Which items are low in stock?"}'
+```
 
-Access the metrics dashboard at: `http://localhost:3000/dashboard.html`
+---
 
-Features:
-- Total requests and success rates
-- Cache hit rates
-- Response time percentiles (P50, P95, P99)
-- Breakdown by store, intent, and error type
-- Auto-refresh every 30 seconds
+## 🏗️ Architecture
+
+```
+┌──────────────┐      ┌───────────────┐      ┌──────────────┐
+│  Browser UI  │  ->  │ Rails Gateway │  ->  │ Python Agent │
+└──────┬───────┘      └───────┬───────┘      └──────┬───────┘
+       │                      │                     │
+       ▼                      ▼                     ▼
+┌──────────────┐      ┌───────────────┐      ┌──────────────┐
+│  Dashboard   │      │   SQLite DB   │      │  Shopify API │
+└──────────────┘      └───────────────┘      └──────────────┘
+```
+
+## 📝 License
+MIT License. Free to use and modify.

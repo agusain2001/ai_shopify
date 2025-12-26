@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify AI Analytics - Chat Interface</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #12122a;
+            --bg-card: #1a1a3e;
+            --accent: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #00d4ff, #7c3aed);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+        }
+
+        .sidebar h2 {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .category {
+            margin-bottom: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-btn {
+            width: 100%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: rgba(0, 212, 255, 0.1);
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        /* Main Chat Area */
+        .main {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .chat-area {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            line-height: 1.6;
+        }
+
+        .message.user {
+            background: var(--accent-gradient);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.assistant .meta {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .message.loading {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .input-area {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .store-input {
+            width: 200px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+        }
+
+        .question-input {
+            flex: 1;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.875rem 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .question-input:focus {
+            border-color: var(--accent);
+        }
+
+        .send-btn {
+            background: var(--accent-gradient);
+            border: none;
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .send-btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .welcome {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .welcome h2 {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome p {
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .sidebar {
+                max-height: 300px;
+            }
+
+            .main {
+                min-height: 70vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar with Quick Questions -->
+        <aside class="sidebar">
+            <h2>🚀 Quick Questions</h2>
+
+            <div class="category">
+                <div class="category-title">📊 Sales & Revenue</div>
+                <button class="quick-btn" onclick="askQuestion('What were my top 5 selling products last week?')">Top
+                    selling products</button>
+                <button class="quick-btn" onclick="askQuestion('What is my total revenue for the last 30 days?')">Total
+                    revenue (30 days)</button>
+                <button class="quick-btn" onclick="askQuestion('How are my sales trending this month?')">Sales
+                    trends</button>
+            </div>
+
+            <div class="category">
+                <div class="category-title">📦 Inventory</div>
+                <button class="quick-btn"
+                    onclick="askQuestion('Which products are likely to go out of stock in 7 days?')">Low stock
+                    alerts</button>
+                <button class="quick-btn"
+                    onclick="askQuestion('How much inventory should I reorder based on last 30 days sales?')">Reorder
+                    suggestions</button>
+                <button class="quick-btn" onclick="askQuestion('Show me all products with low inventory')">View stock
+                    levels</button>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🛒 Orders</div>
+                <button class="quick-btn" onclick="askQuestion('Show me my recent orders')">Recent orders</button>
+                <button class="quick-btn" onclick="askQuestion('How many orders did I receive this week?')">Order
+                    count</button>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🏷️ Products</div>
+                <button class="quick-btn" onclick="askQuestion('List all my products')">All products</button>
+                <button class="quick-btn" onclick="askQuestion('Which product category performs best?')">Best
+                    category</button>
+            </div>
+
+            <div class="category">
+                <div class="category-title">🔮 Projections</div>
+                <button class="quick-btn"
+                    onclick="askQuestion('How many units of my top product will I need next month?')">Inventory
+                    forecast</button>
+                <button class="quick-btn"
+                    onclick="askQuestion('What sales should I expect next week based on current trends?')">Sales
+                    forecast</button>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="main">
+            <div class="header">
+                <h1>🤖 Shopify AI Analytics</h1>
+                <div class="status">
+                    <span class="status-dot"></span>
+                    <span>Connected</span>
+                </div>
+            </div>
+
+            <div class="chat-area" id="chatArea">
+                <div class="welcome">
+                    <h2>Welcome to Shopify AI Analytics!</h2>
+                    <p>Ask any question about your store's sales, inventory, orders, or products.</p>
+                    <p style="font-size: 0.875rem;">Try clicking a quick question on the left, or type your own below.
+                    </p>
+                </div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" class="store-input" id="storeId" value="fry7xk-1v.myshopify.com"
+                    placeholder="Store ID">
+                <input type="text" class="question-input" id="questionInput"
+                    placeholder="Ask a question about your store..." onkeypress="handleKeyPress(event)">
+                <button class="send-btn" id="sendBtn" onclick="sendQuestion()">Send</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/v1/questions';
+        const chatArea = document.getElementById('chatArea');
+        const questionInput = document.getElementById('questionInput');
+        const storeInput = document.getElementById('storeId');
+        const sendBtn = document.getElementById('sendBtn');
+
+        let isFirstMessage = true;
+
+        function askQuestion(question) {
+            questionInput.value = question;
+            sendQuestion();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendQuestion();
+            }
+        }
+
+        async function sendQuestion() {
+            const question = questionInput.value.trim();
+            const storeId = storeInput.value.trim();
+
+            if (!question || !storeId) return;
+
+            // Clear welcome message on first question
+            if (isFirstMessage) {
+                chatArea.innerHTML = '';
+                isFirstMessage = false;
+            }
+
+            // Add user message
+            addMessage(question, 'user');
+            questionInput.value = '';
+
+            // Add loading indicator
+            const loadingId = addLoadingMessage();
+
+            // Disable button
+            sendBtn.disabled = true;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        store_id: storeId,
+                        question: question
+                    })
+                });
+
+                const data = await response.json();
+
+                // Remove loading
+                removeMessage(loadingId);
+
+                // Add response
+                if (data.answer) {
+                    addMessage(data.answer, 'assistant', {
+                        intent: data.intent,
+                        confidence: data.confidence,
+                        cached: data.cached
+                    });
+                } else if (data.error) {
+                    addMessage(`Error: ${data.error}\n\n${data.suggestion || ''}`, 'assistant');
+                }
+
+            } catch (error) {
+                removeMessage(loadingId);
+                addMessage(`Connection error: ${error.message}\n\nMake sure the Rails server is running on port 3000.`, 'assistant');
+            }
+
+            sendBtn.disabled = false;
+        }
+
+        function addMessage(content, type, meta = null) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${type}`;
+            msgDiv.id = `msg-${Date.now()}`;
+
+            // Format content (convert newlines to <br>)
+            const formattedContent = content.replace(/\n/g, '<br>');
+
+            let html = formattedContent;
+
+            if (meta && type === 'assistant') {
+                html += `
+                    <div class="meta">
+                        <span>Intent: ${meta.intent || 'general'}</span>
+                        <span>Confidence: ${meta.confidence || 'N/A'}</span>
+                        ${meta.cached ? '<span>⚡ Cached</span>' : ''}
+                    </div>
+                `;
+            }
+
+            msgDiv.innerHTML = html;
+            chatArea.appendChild(msgDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+
+            return msgDiv.id;
+        }
+
+        function addLoadingMessage() {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message assistant loading';
+            msgDiv.id = `loading-${Date.now()}`;
+            msgDiv.innerHTML = `
+                <div class="typing-indicator">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            `;
+            chatArea.appendChild(msgDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return msgDiv.id;
+        }
+
+        function removeMessage(id) {
+            const msg = document.getElementById(id);
+            if (msg) msg.remove();
+        }
+    </script>
+</body>
+
+</html>

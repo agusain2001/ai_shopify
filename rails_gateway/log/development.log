@@ -1,0 +1,83 @@
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "shops" /*application='RailsGateway'*/[0m
+  [1m[35m (47.0ms)[0m  [1m[35mCREATE TABLE "shops" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "domain" varchar NOT NULL, "access_token" varchar NOT NULL, "scope" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RailsGateway'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_shops_on_domain" ON "shops" ("domain") /*application='RailsGateway'*/[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "request_logs" /*application='RailsGateway'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "request_logs" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "store_id" varchar NOT NULL, "question" text NOT NULL, "response" text, "success" boolean DEFAULT TRUE, "error_message" varchar, "response_time_ms" integer, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RailsGateway'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE INDEX "index_request_logs_on_store_id" ON "request_logs" ("store_id") /*application='RailsGateway'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE INDEX "index_request_logs_on_created_at" ON "request_logs" ("created_at") /*application='RailsGateway'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY) /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RailsGateway'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20241226000002) /*application='RailsGateway'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20241226000001); /*application='RailsGateway'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL) /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2025-12-26 05:47:02.675647', '2025-12-26 05:47:02.675650') RETURNING "key" /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'schema_sha1' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('schema_sha1', 'aacb2c4c4384bb951814d41fb8d9b4305e7eacb8', '2025-12-26 05:47:02.682782', '2025-12-26 05:47:02.682786') RETURNING "key" /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RailsGateway'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RailsGateway'*/[0m
+Started GET "/" for 127.0.0.1 at 2025-12-26 11:20:31 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RailsGateway'*/[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/railties-8.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered C:/Ruby32-x64/lib/ruby/gems/3.2.0/gems/railties-8.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 1.0ms | GC: 0.0ms)
+Completed 200 OK in 346ms (Views: 74.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/icon.png" for 127.0.0.1 at 2025-12-26 11:20:32 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/icon.png"):
+  
+Started GET "/icon.png" for 127.0.0.1 at 2025-12-26 11:20:33 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/icon.png"):
+  
+Started GET "/favicon.ico" for ::1 at 2025-12-26 11:21:09 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:21:31 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"your-store.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store your-store.myshopify.com: What were my top selling products last week?
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+LoadError (cannot load such file -- httparty):
+  
+app/services/python_ai_service.rb:1:in `<main>'
+app/controllers/api/v1/questions_controller.rb:19:in `create'
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:23:05 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+Completed 500 Internal Server Error in 116ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+LoadError (cannot load such file -- httparty):
+  
+app/services/python_ai_service.rb:1:in `<main>'
+app/controllers/api/v1/questions_controller.rb:19:in `create'
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:24:56 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+Completed 500 Internal Server Error in 105ms (ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+  
+LoadError (cannot load such file -- httparty):
+  
+app/services/python_ai_service.rb:1:in `<main>'
+app/controllers/api/v1/questions_controller.rb:19:in `create'
+Started GET "/api/v1/questions" for ::1 at 2025-12-26 11:25:06 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/api/v1/questions"):
+  
+[dotenv] Set [36mPYTHON_SERVICE_URL[0m, [36mSECRET_KEY_BASE[0m, [36mSHOPIFY_API_KEY[0m, [36mSHOPIFY_API_SECRET[0m, [36mSHOPIFY_REDIRECT_URI[0m
+[dotenv] Loaded [33m.env[0m
