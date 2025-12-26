@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify AI Analytics Dashboard</title>
+    <style>
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --accent: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border-radius: 999px;
+            font-size: 0.875rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .icon-requests { background: rgba(0, 212, 255, 0.15); }
+        .icon-success { background: rgba(16, 185, 129, 0.15); }
+        .icon-cache { background: rgba(124, 58, 237, 0.15); }
+        .icon-time { background: rgba(245, 158, 11, 0.15); }
+        
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .breakdown-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .breakdown-list {
+            list-style: none;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            color: var(--text-secondary);
+        }
+        
+        .breakdown-value {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .error-banner {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .card-value { font-size: 2rem; }
+            header { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Shopify AI Analytics Dashboard</h1>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>Live</span>
+                </div>
+                <button class="refresh-btn" onclick="fetchMetrics()">↻ Refresh</button>
+            </div>
+        </header>
+        
+        <div id="error-banner" class="error-banner"></div>
+        
+        <div id="metrics-content">
+            <div class="loading">Loading metrics...</div>
+        </div>
+    </div>
+
+    <script>
+        const METRICS_URL = 'http://localhost:8000/metrics';
+        
+        async function fetchMetrics() {
+            const content = document.getElementById('metrics-content');
+            const errorBanner = document.getElementById('error-banner');
+            
+            try {
+                const response = await fetch(METRICS_URL);
+                if (!response.ok) throw new Error('Failed to fetch metrics');
+                
+                const data = await response.json();
+                errorBanner.style.display = 'none';
+                renderMetrics(data);
+                
+            } catch (error) {
+                errorBanner.textContent = `⚠️ Unable to connect to metrics service: ${error.message}`;
+                errorBanner.style.display = 'block';
+                content.innerHTML = `
+                    <div class="loading">
+                        <p>Make sure the Python AI service is running on port 8000</p>
+                        <code>docker-compose up</code> or <code>python main.py</code>
+                    </div>
+                `;
+            }
+        }
+        
+        function renderMetrics(data) {
+            const { summary, response_times, breakdown } = data;
+            
+            document.getElementById('metrics-content').innerHTML = `
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Total Requests</span>
+                            <div class="card-icon icon-requests">📈</div>
+                        </div>
+                        <div class="card-value">${summary.total_requests.toLocaleString()}</div>
+                        <div class="card-subtitle">Since ${new Date(summary.uptime_since).toLocaleString()}</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Success Rate</span>
+                            <div class="card-icon icon-success">✓</div>
+                        </div>
+                        <div class="card-value">${summary.success_rate_percent}%</div>
+                        <div class="card-subtitle">${summary.successful_requests} successful / ${summary.failed_requests} failed</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Cache Hit Rate</span>
+                            <div class="card-icon icon-cache">⚡</div>
+                        </div>
+                        <div class="card-value">${summary.cache_hit_rate_percent}%</div>
+                        <div class="card-subtitle">Responses served from cache</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">Avg Response Time</span>
+                            <div class="card-icon icon-time">⏱️</div>
+                        </div>
+                        <div class="card-value">${response_times.average_ms}ms</div>
+                        <div class="card-subtitle">P95: ${response_times.p95_ms}ms | P99: ${response_times.p99_ms}ms</div>
+                    </div>
+                </div>
+                
+                <h2 class="section-title">Breakdown</h2>
+                <div class="breakdown-grid">
+                    <div class="breakdown-card">
+                        <h3 class="card-title" style="margin-bottom: 1rem;">Requests by Store</h3>
+                        <ul class="breakdown-list">
+                            ${Object.entries(breakdown.by_store).length > 0 
+                                ? Object.entries(breakdown.by_store)
+                                    .sort((a, b) => b[1] - a[1])
+                                    .slice(0, 10)
+                                    .map(([store, count]) => `
+                                        <li class="breakdown-item">
+                                            <span class="breakdown-label">${store}</span>
+                                            <span class="breakdown-value">${count}</span>
+                                        </li>
+                                    `).join('')
+                                : '<li class="breakdown-item"><span class="breakdown-label">No data yet</span></li>'
+                            }
+                        </ul>
+                    </div>
+                    
+                    <div class="breakdown-card">
+                        <h3 class="card-title" style="margin-bottom: 1rem;">Requests by Intent</h3>
+                        <ul class="breakdown-list">
+                            ${Object.entries(breakdown.by_intent).length > 0 
+                                ? Object.entries(breakdown.by_intent)
+                                    .sort((a, b) => b[1] - a[1])
+                                    .map(([intent, count]) => `
+                                        <li class="breakdown-item">
+                                            <span class="breakdown-label">${intent}</span>
+                                            <span class="breakdown-value">${count}</span>
+                                        </li>
+                                    `).join('')
+                                : '<li class="breakdown-item"><span class="breakdown-label">No data yet</span></li>'
+                            }
+                        </ul>
+                    </div>
+                    
+                    <div class="breakdown-card">
+                        <h3 class="card-title" style="margin-bottom: 1rem;">Errors by Type</h3>
+                        <ul class="breakdown-list">
+                            ${Object.entries(breakdown.by_error_type).length > 0 
+                                ? Object.entries(breakdown.by_error_type)
+                                    .sort((a, b) => b[1] - a[1])
+                                    .map(([error, count]) => `
+                                        <li class="breakdown-item">
+                                            <span class="breakdown-label">${error}</span>
+                                            <span class="breakdown-value" style="color: var(--danger)">${count}</span>
+                                        </li>
+                                    `).join('')
+                                : '<li class="breakdown-item"><span class="breakdown-label">No errors 🎉</span></li>'
+                            }
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Initial fetch and auto-refresh every 30 seconds
+        fetchMetrics();
+        setInterval(fetchMetrics, 30000);
+    </script>
+</body>
+</html>
