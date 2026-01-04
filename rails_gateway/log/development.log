@@ -81,3 +81,95 @@ ActionController::RoutingError (No route matches [GET] "/api/v1/questions"):
   
 [dotenv] Set [36mPYTHON_SERVICE_URL[0m, [36mSECRET_KEY_BASE[0m, [36mSHOPIFY_API_KEY[0m, [36mSHOPIFY_API_SECRET[0m, [36mSHOPIFY_REDIRECT_URI[0m
 [dotenv] Loaded [33m.env[0m
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:32:14 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RailsGateway'*/[0m
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (2.2ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top selling products last week?', '{"error":"Failed to generate valid query after multiple attempts","details":"400 API key expired. Please renew the API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key expired. Please renew the API key.\"\n]","suggestion":"Try rephrasing your question or being more specific about the time range."}', TRUE, NULL, 3649, '2025-12-26 06:02:18.936498', '2025-12-26 06:02:18.936498') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (42.8ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 3919ms (Views: 0.2ms | ActiveRecord: 52.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:36:14 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (3.8ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top selling products last week?', '{"error":"Failed to generate valid query after multiple attempts","details":"400 API key expired. Please renew the API key. [reason: \"API_KEY_INVALID\"\ndomain: \"googleapis.com\"\nmetadata {\n  key: \"service\"\n  value: \"generativelanguage.googleapis.com\"\n}\n, locale: \"en-US\"\nmessage: \"API key expired. Please renew the API key.\"\n]","suggestion":"Try rephrasing your question or being more specific about the time range."}', TRUE, NULL, 3231, '2025-12-26 06:06:17.588778', '2025-12-26 06:06:17.588778') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 3246ms (Views: 0.3ms | ActiveRecord: 4.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:38:49 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (20.4ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top selling products last week?', '{"error":"Failed to generate valid query after multiple attempts","details":"[{''message'': \"Field ''shopifyqlQuery'' doesn''t exist on type ''QueryRoot''\", ''locations'': [{''line'': 3, ''column'': 15}], ''path'': [''query TableQuery'', ''shopifyqlQuery''], ''extensions'': {''code'': ''undefinedField'', ''typeName'': ''QueryRoot'', ''fieldName'': ''shopifyqlQuery''}}, {''message'': ''Variable $query is declared by TableQuery but not used'', ''locations'': [{''line'': 2, ''column'': 13}], ''path'': [''query TableQuery''], ''extensions'': {''code'': ''variableNotUsed'', ''variableName'': ''query''}}]","suggestion":"Try rephrasing your question or being more specific about the time range."}', TRUE, NULL, 26702, '2025-12-26 06:09:16.703716', '2025-12-26 06:09:16.703716') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (92.9ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 26825ms (Views: 0.4ms | ActiveRecord: 113.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:44:41 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (28.6ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top selling products last week?', '{"answer":"I was able to retrieve your store data, but had trouble analyzing it. Please try asking a more specific question.","intent":"sales_analysis","confidence":"low","cached":false}', TRUE, NULL, 4433, '2025-12-26 06:14:46.070959', '2025-12-26 06:14:46.070959') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (94.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 4584ms (Views: 0.2ms | ActiveRecord: 123.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:47:56 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top selling products last week?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (20.2ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top selling products last week?', '{"answer":"It looks like I don''t have any sales data available from last week to identify your top-selling products. The current data shows no orders for that period.\n\nTo help you with this, please make sure the date range for the data extraction includes last week''s sales, or if you''ve recently started, ensure there are orders in your store. Once we have that information, I can definitely tell you which products were your best sellers!","intent":"sales_analysis","confidence":"high","cached":false}', TRUE, NULL, 5653, '2025-12-26 06:18:01.990859', '2025-12-26 06:18:01.990859') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 5686ms (Views: 0.1ms | ActiveRecord: 20.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:53:44 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (15.8ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"answer":"It looks like I don''t have any order data from last week to analyze at the moment. The current data shows no sales records, so I can''t determine your top 5 selling products.\n\nTo help you with this, please ensure that the system has access to your recent order history. Once that data is available, I can quickly identify your best-performing products!","intent":"sales_analysis","confidence":"high","cached":false}', TRUE, NULL, 6742, '2025-12-26 06:23:51.757661', '2025-12-26 06:23:51.757661') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (40.6ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 6816ms (Views: 0.3ms | ActiveRecord: 56.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2025-12-26 11:53:59 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"List all my products"}
+Processing question for store fry7xk-1v.myshopify.com: List all my products
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (2.5ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'List all my products', '{"answer":"It looks like there are currently no products listed in your store.\n\nIf you''ve recently added products, there might be a slight delay, or perhaps they haven''t been published yet. Let me know if you''d like me to check again, or if you''ve recently made changes!","intent":"product_info","confidence":"high","cached":false}', TRUE, NULL, 4936, '2025-12-26 06:24:04.111401', '2025-12-26 06:24:04.111401') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 4962ms (Views: 0.3ms | ActiveRecord: 2.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
