@@ -1,0 +1,29 @@
+# Environment files with secrets
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.so
+
+# Rails
+rails_gateway/log/*.log
+rails_gateway/tmp/
+rails_gateway/db/*.sqlite3
+rails_gateway/db/*.sqlite3-*
+
+# Shopify App Config (contains secrets)
+shopify.app.toml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
