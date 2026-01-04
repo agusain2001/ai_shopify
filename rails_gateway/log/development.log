@@ -173,3 +173,158 @@ Processing question for store fry7xk-1v.myshopify.com: List all my products
 Completed 200 OK in 4962ms (Views: 0.3ms | ActiveRecord: 2.8ms (1 query, 0 cached) | GC: 0.0ms)
 
 
+[dotenv] Set [36mPYTHON_SERVICE_URL[0m, [36mSECRET_KEY_BASE[0m, [36mSHOPIFY_API_KEY[0m, [36mSHOPIFY_API_SECRET[0m, [36mSHOPIFY_REDIRECT_URI[0m
+[dotenv] Loaded [33m.env[0m
+[dotenv] Set [36mPYTHON_SERVICE_URL[0m, [36mSECRET_KEY_BASE[0m, [36mSHOPIFY_API_KEY[0m, [36mSHOPIFY_API_SECRET[0m, [36mSHOPIFY_REDIRECT_URI[0m
+[dotenv] Loaded [33m.env[0m
+Started GET "/favicon.ico" for ::1 at 2026-01-04 12:57:19 +0530
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 12:57:19 +0530
+Started GET "/favicon.ico" for ::1 at 2026-01-04 12:57:19 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='RailsGateway'*/[0m
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (99.0ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 3485, '2026-01-04 07:27:31.967784', '2026-01-04 07:27:31.967784') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (37.3ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 4042ms (Views: 0.4ms | ActiveRecord: 144.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 12:58:06 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"How are my sales trending this month?"}
+Processing question for store fry7xk-1v.myshopify.com: How are my sales trending this month?
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (5.8ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'How are my sales trending this month?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 2709, '2026-01-04 07:28:09.175896', '2026-01-04 07:28:09.175896') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 2732ms (Views: 0.2ms | ActiveRecord: 7.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 13:31:04 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (55.0ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 3039, '2026-01-04 08:01:07.554525', '2026-01-04 08:01:07.554525') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (25.5ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 3157ms (Views: 0.8ms | ActiveRecord: 80.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 13:31:45 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (4.0ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 2694, '2026-01-04 08:01:48.690157', '2026-01-04 08:01:48.690157') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 2707ms (Views: 0.1ms | ActiveRecord: 4.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 13:33:05 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (4.4ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 3109, '2026-01-04 08:03:08.710414', '2026-01-04 08:03:08.710414') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 3123ms (Views: 0.1ms | ActiveRecord: 4.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 13:36:38 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (6.5ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (13.7ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 3748, '2026-01-04 08:06:42.857868', '2026-01-04 08:06:42.857868') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (89.8ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 3875ms (Views: 0.9ms | ActiveRecord: 109.9ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 13:44:38 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"Which products are likely to go out of stock in 7 days?"}
+Processing question for store fry7xk-1v.myshopify.com: Which products are likely to go out of stock in 7 days?
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (31.7ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'Which products are likely to go out of stock in 7 days?', '{"error":"Failed to fetch data from Shopify","details":"402 Client Error: Payment Required for url: https://fry7xk-1v.myshopify.com/admin/api/2024-10/graphql.json","suggestion":"Please check your Shopify API credentials."}', TRUE, NULL, 2871, '2026-01-04 08:14:41.666838', '2026-01-04 08:14:41.666838') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (25.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 2964ms (Views: 0.5ms | ActiveRecord: 56.9ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/auth/callback?code=ef7484f82adb405bf6587198af6991fc&hmac=8c83d35e5298664d573b7c3114c214327f8a109b5c9bd0e136d680b8bb885a14&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvNTBhZnphLWdz&shop=50afza-gs.myshopify.com&timestamp=1767516165" for ::1 at 2026-01-04 14:12:45 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/auth/callback"):
+  
+Started GET "/favicon.ico" for ::1 at 2026-01-04 14:12:47 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+Started GET "/auth/callback?code=ef7484f82adb405bf6587198af6991fc&hmac=8c83d35e5298664d573b7c3114c214327f8a109b5c9bd0e136d680b8bb885a14&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvNTBhZnphLWdz&shop=50afza-gs.myshopify.com&timestamp=1767516165" for ::1 at 2026-01-04 14:16:42 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/auth/callback"):
+  
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 14:18:43 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (122.5ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"answer":"It looks like I don''t have enough order data from last week to determine your top 5 selling products. The system shows that there were no orders recorded for that period.\n\nTo help me answer this, could you please confirm if there were any sales last week, or if you were looking for data from a different time frame? If sales did occur, there might be a data retrieval issue, and we can investigate further.","intent":"sales_analysis","confidence":"high","cached":false}', TRUE, NULL, 6049, '2026-01-04 08:48:49.351175', '2026-01-04 08:48:49.351175') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (26.5ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 6295ms (Views: 2.0ms | ActiveRecord: 149.9ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 14:18:58 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What is my total revenue for the last 30 days?"}
+Processing question for store fry7xk-1v.myshopify.com: What is my total revenue for the last 30 days?
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (3.0ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What is my total revenue for the last 30 days?', '{"answer":"It looks like we don''t have any sales data for the last 30 days in the information provided.\n\nBased on the current data, your total revenue for the last 30 days is **$0.00**.\n\nIf you believe this isn''t correct, it''s possible there was an issue retrieving the order information, or the data source didn''t capture all sales from that period.","intent":"sales_analysis","confidence":"high","cached":false}', TRUE, NULL, 5889, '2026-01-04 08:49:04.898474', '2026-01-04 08:49:04.898474') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (6.9ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 5907ms (Views: 0.2ms | ActiveRecord: 9.9ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/questions" for ::1 at 2026-01-04 16:36:09 +0530
+Processing by Api::V1::QuestionsController#create as */*
+  Parameters: {"store_id"=>"fry7xk-1v.myshopify.com", "question"=>"What were my top 5 selling products last week?"}
+Processing question for store fry7xk-1v.myshopify.com: What were my top 5 selling products last week?
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN immediate TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mRequestLog Create (107.3ms)[0m  [1m[32mINSERT INTO "request_logs" ("store_id", "question", "response", "success", "error_message", "response_time_ms", "created_at", "updated_at") VALUES ('fry7xk-1v.myshopify.com', 'What were my top 5 selling products last week?', '{"answer":"It looks like I don''t have any order data from last week to analyze your top-selling products.\n\nTo help me identify your top 5 selling products, please make sure there are sales recorded in the system for the specified period. Once that data is available, I''ll be able to give you a detailed breakdown!","intent":"sales_analysis","confidence":"high","cached":false}', TRUE, NULL, 6188, '2026-01-04 11:06:16.120531', '2026-01-04 11:06:16.120531') RETURNING "id" /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+  [1m[36mTRANSACTION (33.0ms)[0m  [1m[35mCOMMIT TRANSACTION /*action='create',application='RailsGateway',controller='questions'*/[0m
+  ↳ app/controllers/api/v1/questions_controller.rb:24:in `create'
+Completed 200 OK in 6411ms (Views: 1.1ms | ActiveRecord: 141.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
