@@ -1,4 +1,4 @@
-# Agent Design & Workflow Architecture
+# 🤖 Agent Design & Workflow Architecture
 
 This document describes the design, responsibilities, and internal workflow of the AI Agent used in the Shopify Analytics system. It is intended for developers and reviewers who want to understand how natural language questions are translated into reliable, data-grounded answers.
 
@@ -6,14 +6,14 @@ This document describes the design, responsibilities, and internal workflow of t
 
 ## 🎯 Purpose of the Agent
 
-The AI Agent acts as an intelligent translation layer between non-technical user questions and Shopify’s structured analytics interface.
+The AI Agent acts as an intelligent translation layer between non-technical user questions and Shopify's structured GraphQL API.
 
-Its primary goals are:
+**Primary Goals:**
 
-* Translate natural language into valid ShopifyQL
-* Execute queries safely against real Shopify data
-* Prevent hallucinations by grounding all answers in API responses
-* Return clear, business-friendly insights
+- ✅ Translate natural language into valid Shopify GraphQL queries
+- ✅ Execute queries safely against real Shopify data
+- ✅ Prevent hallucinations by grounding all answers in API responses
+- ✅ Return clear, business-friendly insights
 
 The agent follows a **ReAct-style pattern (Reason → Act → Observe → Respond)** to ensure transparency and reliability at every step.
 
@@ -23,201 +23,231 @@ The agent follows a **ReAct-style pattern (Reason → Act → Observe → Respon
 
 The agent runs a deterministic four-stage pipeline implemented in:
 
-```text
+```
 python_ai_agent/agent.py
 ```
 
-Each stage has a single responsibility and clear input/output boundaries.
-
----
-
-## 1️⃣ Intent Classification & Schema Mapping
-
-**Objective**
-
-Understand what the user is asking and map it to the correct Shopify Analytics schema before generating any query.
-
-**Inputs**
-
-* User’s natural language question
-
-**Outputs**
-
-* Target metric (e.g., `total_inventory`, `net_sales`)
-* Shopify table (e.g., `products`, `orders`, `sales`)
-* Filters (product name, date range, etc.)
-
-**Example**
-
-User question:
-
-> How much inventory do I have for the red t-shirt?
-
-Agent interpretation:
-
-* Metric: `total_inventory`
-* Table: `products`
-* Filter: `product_title CONTAINS "red t-shirt"`
-
-This step prevents common errors such as querying `orders` when the question clearly relates to `products`.
-
----
-
-## 2️⃣ Query Generation (Text → ShopifyQL)
-
-**Objective**
-
-Convert the structured intent into a syntactically correct ShopifyQL query.
-
-**Model Used**
-
-* Google Gemini 1.5 Flash
-
-**Prompt Constraints**
-
-* Output **only** the raw ShopifyQL query string
-* No explanations
-* No Markdown formatting
-
-**Date Handling Rules**
-
-To ensure future-safe queries:
-
-* Only relative dates are allowed
-* Hardcoded dates are explicitly forbidden
-
-Examples:
-
-* ✅ `SINCE -7d UNTIL today`
-* ❌ `SINCE 2024-01-01`
-
-**Sanitization**
-
-After generation, the output is:
-
-* Stripped of Markdown fences
-* Trimmed to a single-line query
-
-**Example**
-
-User:
-
-> What were my sales yesterday?
-
-Generated ShopifyQL:
-
-```text
-SHOW total_sales FROM sales SINCE -1d UNTIL today
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        AGENTIC WORKFLOW                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐           │
+│  │ 1. CLASSIFY  │ -> │ 2. FETCH     │ -> │ 3. ANALYZE   │           │
+│  │    Intent    │    │    Data      │    │    with LLM  │           │
+│  └──────────────┘    └──────────────┘    └──────────────┘           │
+│         │                   │                   │                    │
+│         ▼                   ▼                   ▼                    │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐           │
+│  │ sales_analysis│   │ Shopify      │    │ Gemini 2.5   │           │
+│  │ inventory    │    │ GraphQL API  │    │ Flash        │           │
+│  │ product_info │    │              │    │              │           │
+│  │ order_info   │    │              │    │              │           │
+│  └──────────────┘    └──────────────┘    └──────────────┘           │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 3️⃣ Execution & Validation (The "Hands")
+## 1️⃣ Stage 1: Intent Classification
 
-**Objective**
+**Objective:** Understand what the user is asking and map it to the correct Shopify data source.
 
-Safely execute the generated query and validate the response.
+| User Keywords | Detected Intent | Data Fetched |
+|---------------|-----------------|--------------|
+| sell, sold, sales, revenue, top, best | `sales_analysis` | Orders |
+| inventory, stock, reorder, out of stock | `inventory_check` | Products |
+| product, item | `product_info` | Products |
+| order, recent | `order_info` | Orders |
+| Other | `general` | Orders + Products |
 
-**Execution Flow**
+**Example:**
 
-1. ShopifyQL string is wrapped inside a `shopifyqlQuery` GraphQL mutation
-2. Request is sent to the Shopify GraphQL Admin API via `ShopifyClient`
-3. Response is parsed and validated
+> User: "What are my top selling products?"
 
-**Guardrails**
-
-* **Syntax Errors**
-
-  * Invalid columns or tables are caught
-  * Error context is preserved for recovery or explanation
-
-* **Empty Results**
-
-  * Queries returning zero rows are flagged
-  * This context is passed to the final response stage
-
-This step ensures the agent never fabricates results and always reacts to real API feedback.
-
----
-
-## 4️⃣ Insight Synthesis (The "Voice")
-
-**Objective**
-
-Translate raw API data into clear, business-friendly insights.
-
-**Inputs**
-
-* Original user question
-* Generated ShopifyQL query
-* Raw JSON response from Shopify
-
-**Persona**
-
-* Business Analyst
-
-**Rules**
-
-* No technical jargon (no "JSON", "arrays", "null", etc.)
-* Focus on insights, trends, and clarity
-* Be concise and direct
-
-**Example Output**
-
-> You received 145 orders last week, which is a 10% increase compared to the previous week.
-
----
-
-## 🛡 Failure Modes & Recovery Strategies
-
-| Scenario           | Agent Behavior                                                        |
-| ------------------ | --------------------------------------------------------------------- |
-| Ambiguous Question | Defaults to a standard health-check query (sales over last 7 days)    |
-| Shopify API Error  | Returns a structured error object to the Rails Gateway                |
-| Invalid Token      | Stops execution and reports authentication failure                    |
-| Zero Results       | Clearly explains no matching data was found and suggests alternatives |
-
-The agent never fails silently and never guesses.
-
----
-
-## 📝 Prompt Engineering Strategy
-
-All prompts are defined inside:
-
-```text
-python_ai_agent/agent.py
+```python
+Intent: sales_analysis
+→ Fetch: Orders (last 100)
 ```
 
-**Key Techniques Used**
+---
 
-* Few-shot prompting with valid ShopifyQL examples
-* Explicit schema reminders (e.g., `net_sales` → `orders`, `total_inventory` → `products`)
-* Hard constraints to prevent:
+## 2️⃣ Stage 2: Data Fetching
 
-  * Hallucinated columns
-  * Invalid tables
-  * Hardcoded dates
+**Objective:** Retrieve relevant data from Shopify using the Admin GraphQL API.
 
-This approach significantly reduces query errors and improves consistency.
+**Supported Queries:**
+
+| Method | Purpose | API Used |
+|--------|---------|----------|
+| `get_orders()` | Fetch recent orders with line items | GraphQL |
+| `get_products()` | Fetch products with inventory | GraphQL |
+| `get_inventory_levels()` | Fetch detailed inventory | GraphQL |
+
+**Example GraphQL Query:**
+
+```graphql
+query GetOrders($first: Int!) {
+  orders(first: $first, sortKey: CREATED_AT, reverse: true) {
+    edges {
+      node {
+        id
+        name
+        totalPriceSet {
+          shopMoney { amount, currencyCode }
+        }
+        lineItems(first: 10) {
+          edges {
+            node { title, quantity }
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 
-## 🔒 Design Principles
+## 3️⃣ Stage 3: LLM Analysis
 
-* Deterministic over creative
-* Data-backed responses only
-* Clear separation of reasoning, execution, and narration
-* Safe defaults over ambiguous interpretations
+**Objective:** Use Gemini AI to analyze raw data and generate a human-friendly response.
+
+**Model Used:** Google Gemini 2.5 Flash
+
+**Prompt Engineering:**
+
+```
+You are a helpful Shopify business analyst assistant.
+
+User Question: "{question}"
+Intent: {intent}
+
+Here is the store data from Shopify:
+{data_summary}
+
+INSTRUCTIONS:
+1. Analyze the data to answer the user's question
+2. Provide specific numbers and insights
+3. For sales questions: identify top products by quantity or revenue
+4. For inventory questions: identify low stock items
+5. Be conversational and business-friendly
+6. NEVER mention technical terms like JSON, GraphQL, API, etc.
+7. Format large numbers nicely (e.g., $1,234.56)
+```
 
 ---
 
-## 📌 Summary
+## 4️⃣ Stage 4: Response Delivery
 
-The AI Agent is not a chatbot. It is a controlled analytical system designed to:
+**Output Structure:**
 
-* Reason carefully
-* Act on real data
-* Speak clearly to business users
+```json
+{
+  "answer": "Your top selling product last week was...",
+  "intent": "sales_analysis",
+  "confidence": "high",
+  "cached": false
+}
+```
 
-Every answer can be traced back to a concrete ShopifyQL query and a real API response.
+---
+
+## ⚡ Caching Strategy
+
+To improve performance and reduce API calls:
+
+| Feature | Implementation |
+|---------|---------------|
+| Cache Type | In-memory dictionary |
+| TTL | 5 minutes |
+| Key | MD5 hash of `store_id:question` |
+
+```python
+# Cache lookup
+cache_key = hashlib.md5(f"{store_id}:{question}").hexdigest()
+if cache_key in query_cache:
+    return cached_result  # ⚡ Fast response
+```
+
+---
+
+## 🛡️ Error Handling & Recovery
+
+| Scenario | Agent Behavior |
+|----------|---------------|
+| Ambiguous Question | Uses `general` intent, fetches both orders and products |
+| Shopify API Error | Returns structured error with suggestion |
+| Invalid Token | Reports authentication failure |
+| Empty Results | Explains no data found, suggests alternatives |
+| Rate Limited | Automatic retry with exponential backoff |
+
+**Error Response Example:**
+
+```json
+{
+  "error": "Failed to fetch data from Shopify",
+  "details": "402 Payment Required",
+  "suggestion": "Please check your Shopify API credentials."
+}
+```
+
+---
+
+## 🔒 Security Principles
+
+- ✅ **No hardcoded credentials** - All secrets in `.env` files
+- ✅ **Token passed per-request** - Uses environment variables
+- ✅ **No data persistence** - Raw Shopify data not stored
+- ✅ **Gitignored secrets** - `.env` files excluded from version control
+- ✅ **OAuth 2.0 flow** - Secure Shopify app authentication
+
+---
+
+## 📊 Metrics & Monitoring
+
+The agent tracks:
+
+| Metric | Description |
+|--------|-------------|
+| `total_requests` | Total API calls received |
+| `successful_requests` | Requests that returned valid data |
+| `failed_requests` | Requests that encountered errors |
+| `avg_response_time` | Average processing time in ms |
+| `cache_hit_rate` | Percentage of cached responses |
+
+Available at: `GET /metrics`
+
+---
+
+## 🎨 Design Principles
+
+1. **Deterministic over Creative** - Consistent, predictable responses
+2. **Data-Backed Only** - Every answer traces to real API data
+3. **Separation of Concerns** - Classification → Fetching → Analysis → Response
+4. **Safe Defaults** - When uncertain, fetch more data rather than guess
+5. **User-Friendly Output** - No technical jargon in responses
+
+---
+
+## 📝 Summary
+
+The AI Agent is **not a chatbot** - it's a controlled analytical system designed to:
+
+| Action | Description |
+|--------|-------------|
+| **Reason** | Classify user intent accurately |
+| **Act** | Fetch only relevant Shopify data |
+| **Observe** | Validate API responses for errors |
+| **Respond** | Deliver clear, business-friendly insights |
+
+Every answer can be traced back to a concrete GraphQL query and a real API response.
+
+---
+
+## 📚 References
+
+- [Shopify Admin GraphQL API](https://shopify.dev/docs/api/admin-graphql)
+- [Google Gemini API](https://ai.google.dev/docs)
+- [ReAct Pattern Paper](https://arxiv.org/abs/2210.03629)
