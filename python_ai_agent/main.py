@@ -30,6 +30,7 @@ app.add_middleware(
 class QuestionRequest(BaseModel):
     store_id: str
     question: str
+    access_token: str
 
 @app.get("/health")
 def health_check():
@@ -51,10 +52,9 @@ async def analyze_store(request: QuestionRequest):
     cache_hit = False
     
     try:
-        # Initialize agent with context
-        agent = AnalyticsAgent(store_id=request.store_id)
+        # Pass the token to the agent
+        agent = AnalyticsAgent(store_id=request.store_id, access_token=request.access_token)
         
-        # Run workflow
         result = agent.process_question(request.question)
         
         # Extract metadata for metrics

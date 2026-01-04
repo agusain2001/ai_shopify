@@ -6,10 +6,14 @@ class PythonAiService
   # In local dev, it might be 'http://localhost:8000'
   base_uri ENV.fetch('PYTHON_SERVICE_URL', 'http://python-ai-agent:8000')
 
-  def self.ask(store_id, question)
+  def self.ask(store_id, question, access_token)
     begin
       response = post('/analyze', 
-        body: { store_id: store_id, question: question }.to_json,
+        body: { 
+          store_id: store_id, 
+          question: question,
+          access_token: access_token # <--- Pass the token here
+        }.to_json,
         headers: { 'Content-Type' => 'application/json' }
       )
 
